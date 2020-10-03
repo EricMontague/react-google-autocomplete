@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 export default class ReactGoogleAutocomplete extends React.Component {
   static propTypes = {
@@ -31,15 +31,15 @@ export default class ReactGoogleAutocomplete extends React.Component {
   componentDidMount() {
     // TODO: only take options as configuration object, remove config props from the components props.
     const {
-      types = ['(cities)'],
+      types = ["(cities)"],
       componentRestrictions,
       bounds,
       apiKey,
       fields = [
-        'address_components',
-        'geometry.location',
-        'place_id',
-        'formatted_address'
+        "address_components",
+        "geometry.location",
+        "place_id",
+        "formatted_address"
       ],
       options = {}
     } = this.props;
@@ -57,17 +57,16 @@ export default class ReactGoogleAutocomplete extends React.Component {
     this.disableAutofill();
 
     const handleAutoComplete = () => {
-      this.autocomplete = new google.maps.places.Autocomplete(
+      this.autocomplete = new window.google.maps.places.Autocomplete(
         this.refs.input,
         config
       );
 
       this.event = this.autocomplete.addListener(
-        'place_changed',
+        "place_changed",
         this.onSelected.bind(this)
       );
     };
-
     if (apiKey) {
       this.handleLoadScript().then(() => handleAutoComplete());
     } else {
@@ -81,12 +80,13 @@ export default class ReactGoogleAutocomplete extends React.Component {
       const observerHack = new MutationObserver(() => {
         observerHack.disconnect();
         if (this.refs && this.refs.input) {
-          this.refs.input.autocomplete = this.props.inputAutocompleteValue || 'new-password';
+          this.refs.input.autocomplete =
+            this.props.inputAutocompleteValue || "new-password";
         }
       });
       observerHack.observe(this.refs.input, {
         attributes: true,
-        attributeFilter: ['autocomplete']
+        attributeFilter: ["autocomplete"]
       });
     }
   }
@@ -102,23 +102,28 @@ export default class ReactGoogleAutocomplete extends React.Component {
   }
 
   handleLoadScript = () => {
-    const googleMapsScriptUrl = `https://maps.googleapis.com/maps/api/js?key=${this.props.apiKey}&libraries=places`;
-
+    const googleMapsScriptUrl = `https://maps.googleapis.com/maps/api/js?key=${this.props.apiKey}`;
+    const libraryParameters = "libraries=places";
+    let hasPlacesLibrary = false;
+    document
+      .querySelectorAll(`script[src^="${googleMapsScriptUrl}"]`)
+      .forEach(scriptTag => {
+        if (scriptTag.src.includes(libraryParameters)) {
+          hasPlacesLibrary = true;
+        }
+      });
     // Check if script exists already
-    if (
-      document.querySelectorAll(`script[src="${googleMapsScriptUrl}"]`).length >
-      0
-    ) {
+    if (hasPlacesLibrary) {
       return Promise.resolve();
     }
 
-    this.googleMapsScript = document.createElement('script');
+    this.googleMapsScript = document.createElement("script");
     this.googleMapsScript.src = googleMapsScriptUrl;
 
     document.body.appendChild(this.googleMapsScript);
 
-    return new Promise((resolve) => {
-      this.googleMapsScript.addEventListener('load', () => resolve());
+    return new Promise(resolve => {
+      this.googleMapsScript.addEventListener("load", () => resolve());
     });
   };
 
@@ -130,7 +135,6 @@ export default class ReactGoogleAutocomplete extends React.Component {
       bounds,
       options,
       apiKey,
-      inputAutocompleteValue,
       ...rest
     } = this.props;
 
@@ -151,13 +155,13 @@ export class ReactCustomGoogleAutocomplete extends React.Component {
   }
 
   onChange(e) {
-    const { types = ['(cities)'] } = this.props;
+    const { types = ["(cities)"] } = this.props;
 
     if (e.target.value) {
       this.service.getPlacePredictions(
         { input: e.target.value, types },
         (predictions, status) => {
-          if (status === 'OK' && predictions && predictions.length > 0) {
+          if (status === "OK" && predictions && predictions.length > 0) {
             this.props.onOpen(predictions);
           } else {
             this.props.onClose();
@@ -175,7 +179,7 @@ export class ReactCustomGoogleAutocomplete extends React.Component {
       this.placeService.getDetails(
         { placeId: this.props.input.value },
         (e, status) => {
-          if (status === 'OK') {
+          if (status === "OK") {
             this.refs.input.value = e.formatted_address;
           }
         }
@@ -188,7 +192,7 @@ export class ReactCustomGoogleAutocomplete extends React.Component {
       <div>
         {React.cloneElement(this.props.input, {
           ...this.props,
-          ref: 'input',
+          ref: "input",
           onChange: e => {
             this.onChange(e);
           }
