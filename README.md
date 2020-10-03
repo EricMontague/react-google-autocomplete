@@ -1,10 +1,11 @@
-## React google autocomplete personal fork
+## React google autocomplete Personal Fork
 
   This is my personal fork of the react-google-autocomplete repo. I've forked this repo and made a small change in the source code to make it work smoothly with the [google-maps-react](https://github.com/fullstackreact/google-maps-react) project. When displaying an autocomplete field from this package and a Google map from the other package on the same page you receive an error due to both adding Google's places library JS scripts twice on the page. 
   
   Before adding a Google script to the page, react-google-autocomplete checks first to see if a script already exists, but the criteria for this check is specific to the url structure of this package. I've modified the source code so that the package checks to see if any script that is importing the Google Places library is already existing on the page. If so, this package won't add another script, since it too already relies on that library. This also allows for this package to be more compatible with other react packages that use the Google places library and may run into the same issues. Everything below this paragraph is from the original react-google-autocomplete repo.
 
 
+<hr>
 
   This is a simple react component for working with google [autocomplete](https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete)
 
