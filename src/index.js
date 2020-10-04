@@ -151,7 +151,7 @@ export class ReactCustomGoogleAutocomplete extends React.Component {
 
   constructor(props) {
     super(props);
-    this.service = new google.maps.places.AutocompleteService();
+    this.service = new window.google.maps.places.AutocompleteService();
   }
 
   onChange(e) {
@@ -175,7 +175,7 @@ export class ReactCustomGoogleAutocomplete extends React.Component {
 
   componentDidMount() {
     if (this.props.input.value) {
-      this.placeService = new google.maps.places.PlacesService(this.refs.div);
+      this.placeService = new window.google.maps.places.PlacesService(this.refs.div);
       this.placeService.getDetails(
         { placeId: this.props.input.value },
         (e, status) => {
