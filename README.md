@@ -4,7 +4,7 @@
   
   Before adding a Google script to the page, react-google-autocomplete checks first to see if a script already exists, but the criteria for this check is specific to the url structure of this package. I've modified the source code so that the package checks to see if any script that is importing the Google Places library is already existing on the page. If so, this package won't add another script, since it too already relies on that library. This also allows for this package to be more compatible with other react packages that use the Google places library and may run into the same issues. Everything below this paragraph is from the original react-google-autocomplete repo.
   
-  In order to install this fork as a dependency with npm, type ```npm install https://github.com/EricMontague/react-google-autocomplete``` in your CLI
+  In order to install this fork as a dependency with npm, type ```npm install https://github.com/EricMontague/react-google-autocomplete``` into your CLI
 
 
 <hr>
